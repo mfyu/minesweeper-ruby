@@ -1,9 +1,13 @@
+#require_relative "board"
+
 class Tile
     def initialize
         @bombed = false
         @flagged = false
         @revealed = false
+        @adjacent_bombs = 0
     end
+    attr_accessor :adjacent_bombs
 
     def reveal
         @revealed = true
@@ -27,11 +31,14 @@ class Tile
         @bombed
     end
 
+
     def to_s
         return "F" if flagged?
         return "*" if bombed?
-        return "0" if revealed?
-        return " "
+        
+        return @adjacent_bombs.to_s if revealed? && @adjacent_bombs!=0
+        return "_" if revealed?
+        return "*"
     end
 
     def neighbors
